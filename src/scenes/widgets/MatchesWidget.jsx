@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Space, Table, Typography, ConfigProvider, theme } from "antd";
+import { Space, Table, Typography, ConfigProvider, theme, Spin } from "antd";
 import axios from "axios";
 import { url } from "helper/url";
 
@@ -54,10 +54,13 @@ const MatchesWidget = () => {
     );
     const data = await response.json();
     dispatch(setMatches({ matches: data }));
+    setLoading(false)
   };
 
   useEffect(() => {
+    setLoading(true);
     getAllMacthes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -132,6 +135,7 @@ const MatchesWidget = () => {
             ]}
             dataSource={matches}
             pagination={false}
+            loadingIndicator={<Spin />}
           ></Table>
         </Space>
       </ConfigProvider>

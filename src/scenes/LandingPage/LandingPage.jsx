@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "scenes/navbar";
-import { Avatar, Table, Typography, ConfigProvider, theme } from "antd";
+import { Avatar, Table, Typography, ConfigProvider, theme, Spin } from "antd";
 import { Box } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import { url } from "helper/url";
+import { toast } from "react-toastify";
 
 const LandingPage = () => {
   const [dataSource, setDataSource] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getAllUsers = async () => {
     const response = await fetch(`${url}/getAllUsers`, {
@@ -24,9 +26,12 @@ const LandingPage = () => {
       return { ...obj, rank };
     });
     setDataSource(rankedData);
+    toast.success("Leaderboard loaded!", { toastId: 'leaderboard-call' });
+    setLoading(false);
   };
 
   useEffect(() => {
+    setLoading(true);
     getAllUsers();
   }, []);
 
@@ -54,7 +59,7 @@ const LandingPage = () => {
             LEADERBOARD
           </Typography.Title>
           <Table
-            // loading={loading}
+            loading={loading}
             columns={[
               {
                 title: "Rank",
@@ -92,6 +97,7 @@ const LandingPage = () => {
             ]}
             dataSource={dataSource}
             pagination={false}
+            loadingIndicator={<Spin />}
           ></Table>
         </ConfigProvider>
       </Box>

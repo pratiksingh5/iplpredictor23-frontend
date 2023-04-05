@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setMatches } from "state";
 import { url } from "helper/url";
+import { toast } from 'react-toastify';
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
@@ -95,6 +96,7 @@ const UserWidget = ({ userId, picturePath }) => {
           },
         }
       );
+      toast.success('Predicted successfully!',  { toastId: 'vote-call' });
       console.log(response.data); // log the response message
       getUser();
     } catch (error) {

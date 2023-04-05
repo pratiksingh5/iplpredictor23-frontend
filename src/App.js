@@ -4,6 +4,7 @@ import LoginPage from "scenes/loginPage";
 import ProfilePage from "scenes/profilePage";
 import LandingPage from "scenes/LandingPage/LandingPage";
 import { useMemo } from "react";
+import { ToastContainer } from 'react-toastify';
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
@@ -18,6 +19,7 @@ function App() {
     <div className="app">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
+          <ToastContainer autoClose={2000} />
           <CssBaseline />
           <Routes>
             <Route path="/" element={<LandingPage/>} />

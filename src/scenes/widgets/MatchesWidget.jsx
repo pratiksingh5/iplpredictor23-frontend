@@ -9,6 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Button } from "@mui/material";
+import { toast } from "react-toastify";
 
 const MatchesWidget = () => {
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,7 @@ const MatchesWidget = () => {
         }
       );
       console.log(response.data); // log the response message
+      toast.success("Winner Updated", { toastId: 'winner-call' });
       getAllMacthes();
     } catch (error) {
       console.error(error);
@@ -45,16 +47,14 @@ const MatchesWidget = () => {
   };
 
   const getAllMacthes = async () => {
-    const response = await fetch(
-      `${url}/matches/${_id}/allmatches`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await fetch(`${url}/matches/${_id}/allmatches`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     const data = await response.json();
     dispatch(setMatches({ matches: data }));
-    setLoading(false)
+    toast.success("Matches loaded!");
+    setLoading(false);
   };
 
   useEffect(() => {

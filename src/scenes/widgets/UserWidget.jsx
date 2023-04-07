@@ -64,7 +64,7 @@ const UserWidget = ({ userId, picturePath }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const teamImages = {
-    CSK: "https://example.com/csk.png",
+    CSK: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/513mh5xOQmL._SR600%2C315_PIWhiteStrip%2CBottomLeft%2C0%2C35_SCLZZZZZZZ_FMpng_BG255%2C255%2C255.jpg",
     GT: "https://upload.wikimedia.org/wikipedia/en/thumb/0/09/Gujarat_Titans_Logo.svg/1200px-Gujarat_Titans_Logo.svg.png",
     DC: "https://www.nsbpictures.com/wp-content/uploads/2019/03/1024px-Delhi_Capitals_Logo.svg_.png",
     KKR: "https://logowik.com/content/uploads/images/kolkata-knight-riders6292.jpg",

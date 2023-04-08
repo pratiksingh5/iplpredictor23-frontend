@@ -32,7 +32,7 @@ const HomePage = () => {
             <MatchesWidget />
           ) : (
             <>
-              <h1>Big things brewing!</h1>
+              <h1 style={{textAlign:"center"}}>Big things brewing!</h1>
             </>
           )}
         </Box>

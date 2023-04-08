@@ -5,10 +5,18 @@ import { Box } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import { url } from "helper/url";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+
 
 const LandingPage = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const isAuth = Boolean(useSelector((state) => state.token));
+
+
 
   const getAllUsers = async () => {
     const response = await fetch(`${url}/getAllUsers`, {
@@ -98,6 +106,15 @@ const LandingPage = () => {
             dataSource={dataSource}
             pagination={false}
             loadingIndicator={<Spin />}
+            onRow={(record) => {
+              return {
+                onClick : () => {
+                  if(isAuth){
+                    navigate(`/profile/${record._id}`)
+                  }
+                }
+              }
+            }}
           ></Table>
         </ConfigProvider>
       </Box>

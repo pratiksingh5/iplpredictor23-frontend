@@ -195,7 +195,7 @@ const UserWidget = ({ userId, picturePath }) => {
                   handleSubmit(e, match._id, selectedTeam);
                 }}
               >
-                <Box>
+                <Box sx={{marginTop: "1.5rem"}}>
                   <Typography
                     fontSize="0.9rem"
                     color={main}

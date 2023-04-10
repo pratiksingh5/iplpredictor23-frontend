@@ -44,7 +44,15 @@ const MatchHistoryWidgets = ({userMatches, loading}) => {
                 title: "Predicted Team",
                 dataIndex: "selectedTeam",
                 align: "center",
+                render: (text, record) => {
+   
+                  if (record.winnerTeam && record.winnerTeam === text) {
 
+                    return <div style={{ backgroundColor: "#27ae60", padding:"4px" , borderRadius:"3px"}}>{text}</div>;
+                  } else {
+                    return text;
+                  }
+                },
               },
             ]}
             dataSource={userMatches}

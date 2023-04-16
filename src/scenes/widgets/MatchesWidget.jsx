@@ -27,7 +27,7 @@ const MatchesWidget = () => {
     const { matchId, winner } = data;
     try {
       const response = await axios.put(
-        `${url}/matches/updateUserVote`,
+        `${url}/matches/update`,
         {
           matchId,
           winner,

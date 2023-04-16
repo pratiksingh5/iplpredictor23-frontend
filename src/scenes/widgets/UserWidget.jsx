@@ -48,7 +48,7 @@ const UserWidget = ({ userId, picturePath }) => {
     const currentDate = new Date();
     const filteredData = data.filter((match) => {
       const matchStartTime = new Date(match.date);
-      matchStartTime.setMinutes(matchStartTime.getMinutes() - 30);
+      matchStartTime.setMinutes(matchStartTime.getMinutes() + 30);
       return (
         matchStartTime.getTime() - currentDate.getTime() <=
           24 * 60 * 60 * 1000 && currentDate < matchStartTime
@@ -108,7 +108,7 @@ const UserWidget = ({ userId, picturePath }) => {
     return null;
   }
 
-  const { name, correctedVote, totalVote, instaUsername } = user;
+  const { name, correctedVoteNew, totalVoteNew, instaUsername } = user;
 
   return (
     <WidgetWrapper>
@@ -165,13 +165,13 @@ const UserWidget = ({ userId, picturePath }) => {
         <FlexBetween mb="0.5rem">
           <Typography color={medium}>Prediction Correct</Typography>
           <Typography color={main} fontWeight="500">
-            {correctedVote}
+            {correctedVoteNew}
           </Typography>
         </FlexBetween>
         <FlexBetween>
           <Typography color={medium}>Total Prediction</Typography>
           <Typography color={main} fontWeight="500">
-            {totalVote}
+            {totalVoteNew}
           </Typography>
         </FlexBetween>
       </Box>

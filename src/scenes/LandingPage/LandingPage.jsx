@@ -98,7 +98,7 @@ const LandingPage = () => {
                 align: "center",
                 render: (value, record) => (
                   <span>
-                    {record.correctedVote}/{record.totalVote}
+                    {record.correctedVoteNew}/{record.totalVoteNew}
                   </span>
                 ),
               },

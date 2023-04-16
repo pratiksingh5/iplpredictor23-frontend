@@ -1,9 +1,11 @@
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import Form from "./Form";
 import logo from "../../assets/Thb_logo2.png";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   return (
     <Box>
@@ -13,7 +15,17 @@ const LoginPage = () => {
         p="1rem 6%"
         textAlign="center"
       >
-        <Typography fontWeight="bold" fontSize="32px" color="#fff">
+        <Typography
+          fontWeight="bold"
+          fontSize="32px"
+          color="#fff"
+          sx={{
+            "&:hover": {
+              cursor: "pointer",
+            },
+          }}
+          onClick={() => navigate("/home")}
+        >
           <img src={logo} alt="logo" width="80px" />
         </Typography>
       </Box>

@@ -31,6 +31,16 @@ const loginSchema = yup.object().shape({
   password: yup.string().required("required"),
 });
 
+const forgotSchema = yup.object().shape({
+  email: yup.string().email("invalid email").required("required"),
+});
+
+const changePasswordSchema = yup.object().shape({
+  email: yup.string().email("invalid email").required("required"),
+  OTP: yup.number().required("required"),
+  newPassword: yup.string().required("required"),
+});
+
 const initialValuesRegister = {
   name: "",
   instaUsername: "",
@@ -44,6 +54,15 @@ const initialValuesLogin = {
   password: "",
 };
 
+const initialValuesForgot = {
+  email: ""
+};
+const initialValuesChangePassword = {
+  email: "",
+  OTP: "",
+  newPassword: ""
+};
+
 const Form = () => {
   const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
@@ -53,6 +72,8 @@ const Form = () => {
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
   const isForgot = pageType === "forgot";
+  const isChangePassword = pageType === "change-password";
+
 
   const [incorrectPassword, setIncorrectPassword] = useState("");
 
@@ -82,6 +103,44 @@ const Form = () => {
     //   setPageType("login");
     // }
   };
+
+
+  const forgot = async (values, onSubmitProps) => {
+    const savedUserResponse = await fetch(
+      `${url}/auth/forgot`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      }
+    );
+    const forgotUser = await savedUserResponse.json();
+    setPageType("change-password")
+    toast.success('OTP Sent! Please check your mail');
+    onSubmitProps.resetForm();
+    if(forgotUser){
+      navigate("/login");
+    }
+  };
+
+  const resetPassword = async (values, onSubmitProps) => {
+    const savedUserResponse = await fetch(
+      `${url}/auth/resetPassword`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      }
+    );
+    const forgotUser = await savedUserResponse.json();
+    setPageType("login")
+    toast.success('Password successfully changed! Login to continue');
+    onSubmitProps.resetForm();
+    if(forgotUser){
+      navigate("/login");
+    }
+  };
+
 
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch(`${url}/auth/login`, {
@@ -118,13 +177,15 @@ const Form = () => {
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
+    if (isForgot) await forgot(values, onSubmitProps);
+    if (isChangePassword) await resetPassword(values, onSubmitProps);
   };
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
-      validationSchema={isLogin ? loginSchema : registerSchema}
+      initialValues={isLogin ? initialValuesLogin : isRegister ? initialValuesRegister : initialValuesForgot ? initialValuesForgot : initialValuesChangePassword}
+      validationSchema={isLogin ? loginSchema : isRegister ? registerSchema : forgotSchema ? forgotSchema : changePasswordSchema}
     >
       {({
         values,
@@ -236,6 +297,42 @@ const Form = () => {
                   name="email"
                   error={Boolean(touched.email) && Boolean(errors.email)}
                   helperText={touched.email && errors.email}
+                  sx={{ gridColumn: "span 4" }}
+                />
+              </>
+            )}
+           {isChangePassword && (
+              <>
+               <TextField
+                  label="OTP"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.OTP}
+                  name="OTP"
+                  error={Boolean(touched.OTP) && Boolean(errors.OTP)}
+                  helperText={touched.OTP && errors.OTP}
+                  sx={{ gridColumn: "span 4" }}
+                />
+                <TextField
+                  label="Email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.email}
+                  name="email"
+                  error={Boolean(touched.email) && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
+                  sx={{ gridColumn: "span 4" }}
+                />
+
+               <TextField
+                  label="Password"
+                  type="password"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.newPassword}
+                  name="newPassword"
+                  error={Boolean(touched.password) && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
                   sx={{ gridColumn: "span 4" }}
                 />
               </>

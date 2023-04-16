@@ -1,12 +1,11 @@
 import React from "react";
 import { Space, Table, Typography, ConfigProvider, theme, Spin } from "antd";
 
-const MatchHistoryWidgets = ({userMatches, loading}) => {
+const MatchHistoryWidgets = ({ userMatches, loading }) => {
+  //   useEffect(() => {
 
-//   useEffect(() => {
-
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, []);
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   }, []);
 
   return (
     <div>
@@ -32,23 +31,29 @@ const MatchHistoryWidgets = ({userMatches, loading}) => {
                 title: "Team 1",
                 dataIndex: "team1",
                 align: "center",
-
               },
               {
                 title: "Team 2",
                 dataIndex: "team2",
                 align: "center",
-
               },
               {
                 title: "Predicted Team",
                 dataIndex: "selectedTeam",
                 align: "center",
                 render: (text, record) => {
-   
                   if (record.winnerTeam && record.winnerTeam === text) {
-
-                    return <div style={{ backgroundColor: "#27ae60", padding:"4px" , borderRadius:"3px"}}>{text}</div>;
+                    return (
+                      <div
+                        style={{
+                          backgroundColor: "#27ae60",
+                          padding: "4px",
+                          borderRadius: "3px",
+                        }}
+                      >
+                        {text}
+                      </div>
+                    );
                   } else {
                     return text;
                   }
@@ -57,7 +62,7 @@ const MatchHistoryWidgets = ({userMatches, loading}) => {
             ]}
             dataSource={userMatches}
             pagination={{
-                pageSize: 10
+              pageSize: 10,
             }}
             loadingIndicator={<Spin />}
           ></Table>

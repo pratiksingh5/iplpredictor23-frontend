@@ -23,13 +23,13 @@ const LandingPage = () => {
       method: "GET",
     });
     const data = await response.json();
-    const sortedData = data.sort((a, b) => b.correctedVote - a.correctedVote);
+    const sortedData = data.sort((a, b) => b.correctedVoteNew - a.correctedVoteNew);
     let rank = 1;
-    let prevVote = sortedData[0].correctedVote;
+    let prevVote = sortedData[0].correctedVoteNew;
     const rankedData = sortedData.map((obj, index) => {
-      if (obj.correctedVote < prevVote) {
+      if (obj.correctedVoteNew < prevVote) {
         rank = index + 1;
-        prevVote = obj.correctedVote;
+        prevVote = obj.correctedVoteNew;
       }
       return { ...obj, rank };
     });

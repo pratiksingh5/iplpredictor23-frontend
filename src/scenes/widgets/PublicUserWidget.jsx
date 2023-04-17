@@ -45,13 +45,13 @@ const PublicUserWidget = ({user}) => {
         <FlexBetween mb="0.5rem">
           <Typography color={medium}>Prediction Correct</Typography>
           <Typography color={main} fontWeight="500">
-            {user.correctedVote}
+            {user.correctedVoteNew}
           </Typography>
         </FlexBetween>
         <FlexBetween>
           <Typography color={medium}>Total Prediction</Typography>
           <Typography color={main} fontWeight="500">
-            {user.totalVote}
+            {user.totalVoteNew}
           </Typography>
         </FlexBetween>
       </Box>

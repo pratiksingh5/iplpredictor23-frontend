@@ -78,31 +78,39 @@ const Form = () => {
   const [incorrectPassword, setIncorrectPassword] = useState("");
 
   const register = async (values, onSubmitProps) => {
-    // this allows us to send form info with image
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-    }
-    formData.append("picturePath", values.picture.name);
-
-    const savedUserResponse = await fetch(
-      `${url}/auth/register`,
-      {
+    try {
+      // this allows us to send form info with image
+      const formData = new FormData();
+      for (let value in values) {
+        formData.append(value, values[value]);
+      }
+      formData.append("picturePath", values.picture.name);
+  
+      const savedUserResponse = await fetch(`${url}/auth/register`, {
         method: "POST",
         body: formData,
+      });
+  
+      if (!savedUserResponse.ok) {
+        // Handle non-success responses
+        const errorMessage = await savedUserResponse.text();
+        throw new Error(errorMessage || 'Error registering user');
       }
-    );
-    const savedUser = await savedUserResponse.json();
-    toast.success('Account created successfully!');
-    onSubmitProps.resetForm();
-    console.log(savedUser);
-    if(savedUser){
-      navigate("/home");
+  
+      const savedUser = await savedUserResponse.json();
+      toast.success('Account created successfully!');
+      onSubmitProps.resetForm();
+      console.log(savedUser);
+      if (savedUser) {
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error('Registration error:', error.message);
+      // Handle error (e.g., display error message to user)
+      toast.error('Error creating account. Please try again later.');
     }
-    // if (savedUser) {
-    //   setPageType("login");
-    // }
   };
+  
 
 
   const forgot = async (values, onSubmitProps) => {
@@ -377,10 +385,8 @@ const Form = () => {
               sx={{
                 m: "2rem 0",
                 p: "1rem",
-                backgroundColor: palette.primary.main,
-                color: palette.background.alt,
-                "&:hover": { color: palette.primary.main },
               }}
+              className="button"
             >
               {isLogin ? "LOGIN" : isRegister ? "register" : "forgot"}
             </Button>

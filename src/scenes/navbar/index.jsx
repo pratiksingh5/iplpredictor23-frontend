@@ -16,6 +16,7 @@ import { setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import logo from "../../assets/Thb_logo2.png";
+import "./Navbar.css"
 
 const Navbar = () => {
   const [isMobileMenuToggled] = useState(false);
@@ -80,13 +81,13 @@ const Navbar = () => {
                 }}
                 input={<InputBase />}
               >
-                <MenuItem value={fullName}  onClick={() => navigate("/home")}>
+                <MenuItem value={fullName} onClick={() => navigate("/home")}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
                 <MenuItem onClick={() => navigate("/")}>
                   <Typography>Leaderboard</Typography>
                 </MenuItem>
-                <MenuItem onClick={() =>navigate(`/profile/${user._id}`)}>
+                <MenuItem onClick={() => navigate(`/profile/${user._id}`)}>
                   <Typography>History</Typography>
                 </MenuItem>
                 <MenuItem onClick={() => dispatch(setLogout())}>
@@ -95,22 +96,7 @@ const Navbar = () => {
               </Select>
             </FormControl>
           ) : (
-            <Typography
-              fontWeight="400"
-              fontSize="16px"
-              color="#fff"
-              padding="8px 15px"
-              backgroundColor="#4b4b4b"
-              onClick={() => navigate("/login")}
-              sx={{
-                "&:hover": {
-                  color: "#fff",
-                  cursor: "pointer",
-                },
-              }}
-            >
-              Login
-            </Typography>
+            <button type="button" className="login-btn" onClick={() => navigate("/login")}>Login</button>
           )}
         </FlexBetween>
       ) : (
@@ -139,27 +125,16 @@ const Navbar = () => {
               >
                 <MenuItem onClick={() => navigate("/home")}>Vote</MenuItem>
                 <MenuItem onClick={() => navigate("/")}>Leaderboard</MenuItem>
-                <MenuItem onClick={() => navigate(`/profile/${user._id}`)}>History</MenuItem>
+                <MenuItem onClick={() => navigate(`/profile/${user._id}`)}>
+                  History
+                </MenuItem>
                 <MenuItem onClick={() => dispatch(setLogout())}>
                   Logout
                 </MenuItem>
               </Menu>
             </Box>
           ) : (
-            <Typography
-              fontWeight="medium"
-              fontSize="16px"
-              color="#fff"
-              onClick={() => navigate("/login")}
-              sx={{
-                "&:hover": {
-                  color: "#fff",
-                  cursor: "pointer",
-                },
-              }}
-            >
-              Login
-            </Typography>
+            <button type="button" className="login-btn" onClick={() => navigate("/login")}>Login</button>
           )}
         </Box>
       )}

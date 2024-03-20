@@ -25,17 +25,24 @@ const LandingPage = () => {
     const data = await response.json();
     const sortedData = data.sort((a, b) => b.correctedVoteNew - a.correctedVoteNew);
     let rank = 1;
-    let prevVote = sortedData[0].correctedVoteNew;
-    const rankedData = sortedData.map((obj, index) => {
-      if (obj.correctedVoteNew < prevVote) {
-        rank = index + 1;
-        prevVote = obj.correctedVoteNew;
-      }
-      return { ...obj, rank };
-    });
-    setDataSource(rankedData);
-    toast.success("Leaderboard loaded!", { toastId: 'leaderboard-call' });
-    setLoading(false);
+    let prevVote = sortedData[0]?.correctedVoteNew;
+    if(prevVote){
+      const rankedData = sortedData.map((obj, index) => {
+        if (obj.correctedVoteNew < prevVote) {
+          rank = index + 1;
+          prevVote = obj.correctedVoteNew;
+        }
+        return { ...obj, rank };
+      });
+      setDataSource(rankedData);
+      toast.success("Leaderboard loaded!", { toastId: 'leaderboard-call' });
+      setLoading(false);
+    }
+    else{
+      toast.success("Tournament not started yet", { toastId: 'leaderboard-call' });
+      setLoading(false);
+    }
+
   };
 
   useEffect(() => {
@@ -57,7 +64,7 @@ const LandingPage = () => {
             align="center"
             style={{ margin: "10px 0" }}
           >
-            IPL Predictor 2023
+            IPL Predictor 2024
           </Typography.Title>
           <Typography.Title
             level={5}

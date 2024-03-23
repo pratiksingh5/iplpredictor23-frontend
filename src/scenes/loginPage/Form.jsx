@@ -23,7 +23,7 @@ const registerSchema = yup.object().shape({
   instaUsername: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
-  picture: yup.string().required("required"),
+  // picture: yup.string().required("required"),
 });
 
 const loginSchema = yup.object().shape({
@@ -46,7 +46,7 @@ const initialValuesRegister = {
   instaUsername: "",
   email: "",
   password: "",
-  picture: "",
+  // picture: "",
 };
 
 const initialValuesLogin = {
@@ -80,15 +80,25 @@ const Form = () => {
   const register = async (values, onSubmitProps) => {
     try {
       // this allows us to send form info with image
-      const formData = new FormData();
-      for (let value in values) {
-        formData.append(value, values[value]);
-      }
-      formData.append("picturePath", values.picture.name);
+      // const formData = new FormData();
+      // for (let value in values) {
+      //   formData.append(value, values[value]);
+      // }
+      // formData.append("picturePath", values.picture.name);
+
+
   
+      // const savedUserResponse = await fetch(`${url}/auth/register`, {
+      //   method: "POST",
+      //   body: formData,
+      // });
+
       const savedUserResponse = await fetch(`${url}/auth/register`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(values)
       });
   
       if (!savedUserResponse.ok) {
@@ -238,7 +248,7 @@ const Form = () => {
                   helperText={touched.occupation && errors.occupation}
                   sx={{ gridColumn: "span 4" }}
                 />
-                <Box
+                {/* <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
                   borderRadius="5px"
@@ -270,7 +280,7 @@ const Form = () => {
                       </Box>
                     )}
                   </Dropzone>
-                </Box>
+                </Box> */}
                 <TextField
                   label="Email"
                   onBlur={handleBlur}

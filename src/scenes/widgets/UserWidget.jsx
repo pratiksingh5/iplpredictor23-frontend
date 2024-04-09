@@ -72,7 +72,8 @@ const UserWidget = ({ userId, picturePath }) => {
     PBKS : "https://pixlok.com/wp-content/uploads/2021/04/Punjab-Kings-Logo-PNG-Image.jpg",
     RR: "https://i.pinimg.com/originals/b2/21/ee/b221ee9ae9ecb3fa0f158161ef457e29.png",
     RCB: "https://e1.pxfuel.com/desktop-wallpaper/436/167/desktop-wallpaper-rcb-logo-ipl-logo-thumbnail.jpg",
-    SRH: "https://www.pngitem.com/pimgs/m/77-776155_sunrisers-hyderabad-logo-png-image-free-download-searchpng.png"
+    SRH: "https://www.pngitem.com/pimgs/m/77-776155_sunrisers-hyderabad-logo-png-image-free-download-searchpng.png",
+    GT: "https://upload.wikimedia.org/wikipedia/en/thumb/0/09/Gujarat_Titans_Logo.svg/1200px-Gujarat_Titans_Logo.svg.png"
   };
 
   const handleSelectTeam = (event) => {

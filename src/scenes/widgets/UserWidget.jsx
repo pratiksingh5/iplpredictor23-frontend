@@ -51,7 +51,7 @@ const UserWidget = ({ userId, picturePath }) => {
       matchStartTime.setMinutes(matchStartTime.getMinutes() + 30);
       return (
         matchStartTime.getTime() - currentDate.getTime() <=
-          24 * 60 * 60 * 1000 && currentDate < matchStartTime
+          28 * 60 * 60 * 1000 && currentDate < matchStartTime
       );
     });
     console.log(filteredData);
@@ -69,7 +69,7 @@ const UserWidget = ({ userId, picturePath }) => {
     KKR: "https://logowik.com/content/uploads/images/kolkata-knight-riders6292.jpg",
     LSG: "https://logowik.com/content/uploads/images/lucknow-super-giants3550.logowik.com.webp",
     MI: "https://www.pngall.com/wp-content/uploads/2017/04/Mumbai-Indians-Logo-PNG.png",
-    PBKS : "https://pixlok.com/wp-content/uploads/2021/04/Punjab-Kings-Logo-PNG-Image.jpg",
+    PBKS : "https://i.pinimg.com/originals/a0/1a/b1/a01ab1127a06b5585f01eb17ce8d19fb.png",
     RR: "https://i.pinimg.com/originals/b2/21/ee/b221ee9ae9ecb3fa0f158161ef457e29.png",
     RCB: "https://e1.pxfuel.com/desktop-wallpaper/436/167/desktop-wallpaper-rcb-logo-ipl-logo-thumbnail.jpg",
     SRH: "https://www.pngitem.com/pimgs/m/77-776155_sunrisers-hyderabad-logo-png-image-free-download-searchpng.png",
@@ -226,7 +226,7 @@ const UserWidget = ({ userId, picturePath }) => {
                             >
                               <img
                                 src={teamImages[match.team1]}
-                                alt="twitter"
+                                alt="team"
                                 width="60"
                               />
                               <Typography color={main} fontWeight="500">
@@ -250,7 +250,7 @@ const UserWidget = ({ userId, picturePath }) => {
                             >
                               <img
                                 src={teamImages[match.team2]}
-                                alt="twitter"
+                                alt="team2"
                                 width="60"
                               />
 

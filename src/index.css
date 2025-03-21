@@ -187,28 +187,16 @@
 
 /* HTML: <div class="loader"></div> */
 .loader {
-  height: 60px;
-  aspect-ratio: 2;
-  border-bottom: 3px solid #524656;
-  position: relative;
-  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  --c:no-repeat linear-gradient(#0BB3FB 0 0);
+  background: var(--c),var(--c),var(--c),var(--c);
+  background-size: 21px 21px;
+  animation: l5 1.5s infinite cubic-bezier(0.3,1,0,1);
 }
-.loader:before {
-  content: "";
-  position: absolute;
-  inset: auto 42.5% 0;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #CF4647;
-  animation: 
-    l1-0 .5s cubic-bezier(0,900,1,900) infinite,
-    l1-1  2s linear infinite;
-}
-@keyframes l1-0 {
-  0%,2% {bottom: 0%}
-  98%,to {bottom:.1%}
-}
-@keyframes l1-1 {
-  0% {translate: -500%}
-  to {translate:  500%}
+@keyframes l5 {
+ 0%   {background-position: 0    0,100% 0   ,100% 100%,0 100%}
+ 33%  {background-position: 0    0,100% 0   ,100% 100%,0 100%;width:60px;height: 60px}
+ 66%  {background-position: 100% 0,100% 100%,0    100%,0 0   ;width:60px;height: 60px}
+ 100% {background-position: 100% 0,100% 100%,0    100%,0 0   }
 }

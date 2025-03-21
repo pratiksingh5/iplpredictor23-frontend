@@ -47,6 +47,7 @@ const ResetPassword = () => {
     try {
       const savedUserResponse = await fetch(`${url}/auth/forgot`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });

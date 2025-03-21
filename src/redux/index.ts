@@ -1,4 +1,4 @@
-import { createSlice , PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 // Define types for the state
 interface User {
@@ -36,6 +36,9 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
+    updateUser: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
+    },
     setLogout: (state) => {
       state.user = null;
       state.token = null;
@@ -53,6 +56,7 @@ export const {
   setLogin,
   setLogout,
   setMatches,
-  setYear
+  setYear,
+  updateUser
 } = authSlice.actions;
 export default authSlice.reducer;

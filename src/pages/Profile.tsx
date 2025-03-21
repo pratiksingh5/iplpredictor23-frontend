@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Upload, Check } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import { useSelector, useDispatch } from "react-redux";
+
 import {
   Form,
   FormControl,
@@ -18,7 +20,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { updateProfileSchema } from "@/utils/validations/schema";
 import { url } from "@/utils/url";
-import { Loader2 } from "lucide-react"; // Import Loader icon
+import { Loader2 } from "lucide-react";
+import { RootState } from "@/main";
+import { updateUser } from "@/redux";
 
 const Profile = () => {
   const fileInputRef = useRef(null);
@@ -26,9 +30,55 @@ const Profile = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user);
+  console.log("Current User State:", user);
+  const token = useSelector((state: RootState) => state.token);
+  const userId = user._id;
+  console.log(userId);
+
   const updateForm = useForm<z.infer<typeof updateProfileSchema>>({
     resolver: zodResolver(updateProfileSchema),
+    defaultValues: {
+      name: "",
+      instaUsername: "",
+      picturePath: "",
+    },
   });
+
+  const getUser = async () => {
+    if (!userId) return;
+
+    try {
+      const response = await fetch(`${url}/users/${userId}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error("Failed to fetch user data.");
+      const data = await response.json();
+      dispatch(updateUser(data))
+
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
+
+  useEffect(() => {
+    if(userId) getUser()
+  }, [userId])
+
+  useEffect(() => {
+    if (user) {
+      updateForm.setValue("name", user.name || "", { shouldDirty: true });
+      updateForm.setValue("instaUsername", user.instaUsername || "", {
+        shouldDirty: true,
+      });
+      updateForm.setValue("picturePath", user.picturePath.url || "", {
+        shouldDirty: true,
+      });
+    }
+  }, [user]);
 
   const handleUpload = async (file: File | null) => {
     if (!file) return;
@@ -51,8 +101,8 @@ const Profile = () => {
       if (!data.imageUrl) {
         throw new Error("Invalid response: No imageUrl returned");
       }
-      setImageUrl(data.imageUrl); 
-      updateForm.setValue("picturePath", data.imageUrl);
+      setImageUrl(data.imageUrl);
+      updateForm.setValue("picturePath", data.imageUrl, { shouldDirty: true });
     } catch (err) {
       console.error("Upload failed", err);
     } finally {
@@ -66,10 +116,29 @@ const Profile = () => {
   ): Promise<void> {
     setLoading(true); // Start loading
     try {
-      // TO BE LATER
-      //   }
+      console.log(values);
+      if (!userId) return;
+      const response = await fetch(`${url}/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // If auth is required
+        },
+        body: JSON.stringify(values),
+      });
+
+      const updatedUser = await response.json();
+      dispatch(updateUser(updatedUser));
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update user");
+      }
+
+      getUser()
+
+      toast.success("Profile updated successfully!");
     } catch (error: any) {
-      console.warn(error)
+      console.warn(error);
       toast.error("Error updating account. Please try again later.");
     } finally {
       setLoading(false); // Start loading
@@ -119,7 +188,7 @@ const Profile = () => {
                   className="hidden"
                   ref={fileInputRef}
                   onChange={(e) => {
-                    const file = e.target.files?.[0]; 
+                    const file = e.target.files?.[0];
                     if (file) handleUpload(file);
                   }}
                 />
@@ -130,7 +199,11 @@ const Profile = () => {
                 control={updateForm.control}
                 name="picturePath"
                 render={({ field }) => (
-                  <Input type="hidden" {...field} value={imageUrl} />
+                  <Input
+                    type="hidden"
+                    {...field}
+                    value={imageUrl || user.picturePath.url || ""}
+                  />
                 )}
               />
               <FormField
@@ -164,7 +237,6 @@ const Profile = () => {
                         {...field}
                       />
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -178,8 +250,7 @@ const Profile = () => {
                 {loading ? (
                   <Loader2 className="animate-spin h-5 w-5" />
                 ) : (
-                  //   "Update Profile"
-                  "Coming Soon"
+                  "Update Profile"
                 )}
               </Button>
             </form>

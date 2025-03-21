@@ -98,10 +98,8 @@ export default function LoginForm({ type }: LoginFormProps) {
       });
 
       if (!savedUserResponse.ok) {
-        // Handle non-success responses
-        const errorMessage = await savedUserResponse.text();
-        toast.error(errorMessage);
-        throw new Error(errorMessage || "Error registering user");
+        toast.error(savedUserResponse?.message || "Error registering user");
+        throw new Error(savedUserResponse?.message || "Error registering user");
       }
 
       const savedUser = await savedUserResponse.json();

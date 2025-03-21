@@ -97,12 +97,13 @@ export default function LoginForm({ type }: LoginFormProps) {
         body: JSON.stringify(values),
       });
 
+      const savedUser = await savedUserResponse.json();
+
       if (!savedUserResponse.ok) {
-        toast.error(savedUserResponse?.message || "Error registering user");
-        throw new Error(savedUserResponse?.message || "Error registering user");
+        toast.error(savedUser?.message || "Error registering user");
+        throw new Error(savedUser?.message || "Error registering user");
       }
 
-      const savedUser = await savedUserResponse.json();
       registerForm.reset();
       if (savedUser) {
         navigate("/login");

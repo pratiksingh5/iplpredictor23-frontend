@@ -18,7 +18,7 @@ const MatchHistory = () => {
   const [loading, setLoading] = useState(false);
 
   const { id } = useParams(); // ✅ Get userId from the URL
-  const userId = userInfo?._id || id;
+  const userId = id || userInfo?._id;
 
   useEffect(() => {
     if (!userId || !year) return;
@@ -26,7 +26,7 @@ const MatchHistory = () => {
       try {
         const response = await fetch(`${url}/users/${userId}?year=${year}`, {
           method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
+          // headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();
         setUser(data);

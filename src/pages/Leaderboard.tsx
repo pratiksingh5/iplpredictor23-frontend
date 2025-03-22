@@ -71,10 +71,13 @@ const Leaderboard = () => {
   }, [year]);
 
   return (
-    <div >
+    <div>
       <h1 className="text-center ">
         {" "}
-        <Button onClick={() => navigate('/register')} className="text-lg uppercase cursor-pointer ">
+        <Button
+          onClick={() => navigate("/register")}
+          className="text-lg uppercase cursor-pointer "
+        >
           Participate Now
         </Button>
       </h1>
@@ -107,7 +110,9 @@ const Leaderboard = () => {
               render: (_, record) => {
                 return (
                   <div className="flex justify-between">
-                    <Avatar src={record?.picturePath?.url ?? record?.picturePath } />
+                    <Avatar
+                      src={record?.picturePath?.url ?? record?.picturePath}
+                    />
                     <h5 style={{ fontWeight: "500" }}>
                       {record?.instaUsername}
                     </h5>
@@ -132,10 +137,9 @@ const Leaderboard = () => {
           onRow={(record) => {
             return {
               onClick: () => {
-                if (isAuth) {
-                  navigate(`/profile/${record._id}`);
-                }
+                navigate(`/profile/${record._id}`);
               },
+              className: "cursor-pointer", 
             };
           }}
         ></Table>

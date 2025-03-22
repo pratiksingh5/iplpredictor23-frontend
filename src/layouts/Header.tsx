@@ -38,6 +38,7 @@ function Header() {
 
   const handleLogout = () => {
     dispatch(setLogout());
+    navigate('/')
   };
 
   return (

@@ -69,7 +69,7 @@ const MatchHistory = () => {
               <div className="flex items-center gap-4">
                 <Avatar className="w-12 h-12">
                   <img
-                    src={user?.picturePath?.url || "https://res.cloudinary.com/vbushoutout/image/upload/v1711174540/THBM-LOGO2_yt6nlf.jpg"}
+                    src={user?.picturePath?.url ?? user?.picturePath}
                     alt="User"
                     className="w-full h-full rounded-full border-2 border-primary"
                   />

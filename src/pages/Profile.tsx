@@ -8,6 +8,7 @@ import { Upload, Check } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useSelector, useDispatch } from "react-redux";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import {
   Form,
@@ -28,22 +29,22 @@ const Profile = () => {
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
-  console.log("Current User State:", user);
   const token = useSelector((state: RootState) => state.token);
   const userId = user._id;
-  console.log(userId);
 
   const updateForm = useForm<z.infer<typeof updateProfileSchema>>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      name: "",
-      instaUsername: "",
-      picturePath: "",
+      name: user?.name || "",
+      instaUsername: user?.instaUsername || "",
+      picturePath: user?.picturePath || "",
     },
   });
 
@@ -57,28 +58,17 @@ const Profile = () => {
       });
       if (!response.ok) throw new Error("Failed to fetch user data.");
       const data = await response.json();
-      dispatch(updateUser(data))
-
+      const userImage = data?.picturePath ?? data?.picturePath?.url;
+      setImageUrl(userImage);
+      dispatch(updateUser(data));
     } catch (error) {
       console.error("Error fetching user:", error);
     }
   };
 
   useEffect(() => {
-    if(userId) getUser()
-  }, [userId])
-
-  useEffect(() => {
-    if (user) {
-      updateForm.setValue("name", user.name || "", { shouldDirty: true });
-      updateForm.setValue("instaUsername", user.instaUsername || "", {
-        shouldDirty: true,
-      });
-      updateForm.setValue("picturePath", user.picturePath.url || "", {
-        shouldDirty: true,
-      });
-    }
-  }, [user]);
+    if (userId) getUser();
+  }, [userId]);
 
   const handleUpload = async (file: File | null) => {
     if (!file) return;
@@ -101,6 +91,7 @@ const Profile = () => {
       if (!data.imageUrl) {
         throw new Error("Invalid response: No imageUrl returned");
       }
+      setIsImageUploaded(true)
       setImageUrl(data.imageUrl);
       updateForm.setValue("picturePath", data.imageUrl, { shouldDirty: true });
     } catch (err) {
@@ -116,7 +107,6 @@ const Profile = () => {
   ): Promise<void> {
     setLoading(true); // Start loading
     try {
-      console.log(values);
       if (!userId) return;
       const response = await fetch(`${url}/users/${userId}`, {
         method: "PUT",
@@ -128,13 +118,13 @@ const Profile = () => {
       });
 
       const updatedUser = await response.json();
-      dispatch(updateUser(updatedUser));
+      dispatch(updateUser(updatedUser.updatedUser));
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to update user");
       }
 
-      getUser()
+      getUser();
 
       toast.success("Profile updated successfully!");
     } catch (error: any) {
@@ -156,6 +146,14 @@ const Profile = () => {
               className="space-y-8 max-w-3xl mx-auto py-10"
             >
               <div className="flex flex-col gap-2">
+                {(imageUrl || user?.picturePath)  && (
+                  <div className="flex justify-center">
+                    <Avatar className="w-16 h-16 border-2 border-primary">
+                      <AvatarImage src={imageUrl ?? user?.picturePath } alt="Uploaded profile" />
+                      <AvatarFallback>UP</AvatarFallback>
+                    </Avatar>
+                  </div>
+                )}
                 <FormLabel
                   htmlFor="file-upload"
                   className="text-sm font-medium"
@@ -166,7 +164,7 @@ const Profile = () => {
                   htmlFor="file-upload"
                   className="flex items-center justify-center gap-2 w-full p-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-black"
                 >
-                  {imageUrl ? (
+                  {isImageUploaded ? (
                     <>
                       <Check className="w-5 h-5 text-green-500" />
                       <span className="text-sm">Uploaded</span>
@@ -245,7 +243,7 @@ const Profile = () => {
               <Button
                 type="submit"
                 className="w-full cursor-pointer rounded-full "
-                disabled={true} // Disable button when loading
+                disabled={loading} // Disable button when loading
               >
                 {loading ? (
                   <Loader2 className="animate-spin h-5 w-5" />

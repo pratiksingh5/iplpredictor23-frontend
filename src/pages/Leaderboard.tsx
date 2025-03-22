@@ -104,11 +104,10 @@ const Leaderboard = () => {
               dataIndex: "name",
               align: "center",
               width: "200px",
-              render: (value, record) => {
-                console.log("record", record)
+              render: (_, record) => {
                 return (
                   <div className="flex justify-between">
-                    <Avatar src={record?.picturePath?.url} />
+                    <Avatar src={record?.picturePath?.url ?? record?.picturePath } />
                     <h5 style={{ fontWeight: "500" }}>
                       {record?.instaUsername}
                     </h5>

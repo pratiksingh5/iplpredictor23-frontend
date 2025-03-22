@@ -39,7 +39,7 @@ const TabsMenu = () => {
         >
           Predict Now
         </TabsTrigger>
-        {activeTab !== "predict" && (
+        {activeTab !== "predict" &&  activeTab !== "leaderboard" && (
           <Separator orientation="vertical" className="h-6 bg-white" />
         )}
 

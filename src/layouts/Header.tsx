@@ -85,7 +85,7 @@ function Header() {
               <DropdownMenuTrigger className="cursor-pointer outline-none">
                 {" "}
                 <Avatar className="border-2 border-primary">
-                  <AvatarImage src={user?.picturePath?.url} />
+                  <AvatarImage src={user?.picturePath?.url ?? user?.picturePath} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>

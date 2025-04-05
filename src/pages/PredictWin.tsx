@@ -6,9 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setMatches } from "@/redux";
 import { teamImages } from "@/utils/constants";
 import { url } from "@/utils/url";
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import toast from "react-hot-toast";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import { Check, Loader2 } from "lucide-react";
 import { RootState } from "@/main";
 
@@ -21,10 +20,19 @@ const PredictWin = () => {
 
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [selectedTeams, setSelectedTeams] = useState<Record<string, string>>(
+    {}
+  );
+  // const form = useForm({
+  //   defaultValues: { selectedTeam: "" },
+  // });
 
-  const form = useForm({
-    defaultValues: { selectedTeam: "" },
-  });
+  const handleTeamChange = (matchId: string, team: string) => {
+    setSelectedTeams((prev) => ({
+      ...prev,
+      [matchId]: team,
+    }));
+  };
 
   /** ✅ Memoized Function to Check If User Has Already Voted */
   const hasVoted = useCallback(
@@ -78,9 +86,11 @@ const PredictWin = () => {
     }
   };
 
-  const onSubmit = async (data, matchId) => {
-    if (!data.selectedTeam)
-      return toast.error("Please select a team before voting.");
+  const onSubmit = async (selectedTeam: string, matchId: string) => {
+    if (!selectedTeam) {
+      toast.error("Please select a team before voting.");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -93,7 +103,7 @@ const PredictWin = () => {
         body: JSON.stringify({
           userId,
           matchId,
-          selectedTeam: data.selectedTeam,
+          selectedTeam: selectedTeam,
           year: year,
         }),
       });
@@ -125,88 +135,77 @@ const PredictWin = () => {
           //   (vote) => vote.matchId === match._id
           // );
           return (
-            <Form key={match._id} {...form}>
-              <form
-                className="mb-6 w-80"
-                onSubmit={form.handleSubmit((data) =>
-                  onSubmit(data, match?._id)
-                )}
-              >
-                <Card className="bg-transparent text-white ">
-                  <CardContent className="p-6 space-y-4 flex justify-center flex-col items-center ">
-                    <h6> Match {match?.matchNo}</h6>
+            <form
+              className="mb-6 w-80"
+              onSubmit={(e) => {
+                e.preventDefault();
+                onSubmit(selectedTeams[match._id], match._id);
+              }}
+            >
+              <Card className="bg-transparent text-white ">
+                <CardContent className="p-6 space-y-4 flex justify-center flex-col items-center ">
+                  <h6> Match {match?.matchNo}</h6>
 
-                    <FormField
-                      control={form.control}
-                      name="selectedTeam"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <RadioGroup
-                              value={field.value}
-                              onValueChange={(value) => {
-                                form.setValue("selectedTeam", value);
-                              }}
-                              className="flex justify-between w-full gap-8"
-                            >
-                              {[match.team1, match.team2].map((team) => (
-                                <div
-                                  key={team}
-                                  className="flex flex-col items-center"
-                                >
-                                  <img
-                                    src={teamImages[team]}
-                                    alt={team}
-                                    className="w-16 h-16 mb-2 object-contain"
-                                  />
-                                  <label
-                                    htmlFor={team}
-                                    className={`px-6 py-2 mt-2 rounded-lg cursor-pointer text-center transition-all border 
-          ${
-            field.value === team
-              ? " text-white border-4 border-primary"
-              : " border-gray-300 hover:bg-gray-300"
-          }`}
-                                  >
-                                    {team}
-                                    <RadioGroupItem
-                                      value={team}
-                                      id={team}
-                                      className="sr-only"
-                                    />
-                                  </label>
-                                </div>
-                              ))}
-                            </RadioGroup>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <Button
-                      type="submit"
-                      disabled={hasVoted(match._id)}
-                      className={`w-full mt-4 cursor-pointer ${
-                        hasVoted(match._id) ? "cursor-not-allowed" : ""
-                      }`}
-                    >
-                      {hasVoted(match._id) ? (
-                        <>
-                          <Check className="w-5 h-5 text-green-500" />
-                          <span className="text-sm">Already voted</span>
-                        </>
-                      ) : loading ? (
-                        <>
-                          <Loader2 className="animate-spin h-5 w-5" />
-                          Predicting...
-                        </>
-                      ) : (
-                        "Predict Now"
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </form>
-            </Form>
+                  <RadioGroup
+                    value={selectedTeams[match._id] || ""}
+                    onValueChange={(value) =>
+                      handleTeamChange(match._id, value)
+                    }
+                    className="flex justify-between w-full gap-8"
+                  >
+                    {[match.team1, match.team2].map((team) => {
+                      const radioId = `${match._id}-${team}`;
+                      return (
+                        <div key={team} className="flex flex-col items-center">
+                          <img
+                            src={teamImages[team]}
+                            alt={team}
+                            className="w-16 h-16 mb-2 object-contain"
+                          />
+                          <label
+                            htmlFor={radioId}
+                            className={`px-6 py-2 mt-2 rounded-lg cursor-pointer text-center transition-all border 
+            ${
+              selectedTeams[match._id] === team
+                ? " text-white border-4 border-primary"
+                : " border-gray-300 hover:bg-gray-300"
+            }`}
+                          >
+                            {team}
+                            <RadioGroupItem
+                              value={team}
+                              id={radioId}
+                              className="sr-only"
+                            />
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </RadioGroup>
+                  <Button
+                    type="submit"
+                    disabled={hasVoted(match._id)}
+                    className={`w-full mt-4 cursor-pointer ${
+                      hasVoted(match._id) ? "cursor-not-allowed" : ""
+                    }`}
+                  >
+                    {hasVoted(match._id) ? (
+                      <>
+                        <Check className="w-5 h-5 text-green-500" />
+                        <span className="text-sm">Already voted</span>
+                      </>
+                    ) : loading ? (
+                      <>
+                        <Loader2 className="animate-spin h-5 w-5" />
+                        Predicting...
+                      </>
+                    ) : (
+                      "Predict Now"
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
+            </form>
           );
         })
       ) : (

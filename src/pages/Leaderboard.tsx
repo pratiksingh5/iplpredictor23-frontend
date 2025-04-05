@@ -72,15 +72,6 @@ const Leaderboard = () => {
 
   return (
     <div>
-      <h1 className="text-center ">
-        {" "}
-        <Button
-          onClick={() => navigate("/register")}
-          className="text-lg uppercase cursor-pointer "
-        >
-          Participate Now
-        </Button>
-      </h1>
       <ConfigProvider
         theme={{
           algorithm: theme.darkAlgorithm,

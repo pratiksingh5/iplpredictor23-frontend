@@ -6,7 +6,7 @@ export const teamImages = {
     MI: "https://www.pngall.com/wp-content/uploads/2017/04/Mumbai-Indians-Logo-PNG.png",
     PBKS : "https://i.pinimg.com/originals/a0/1a/b1/a01ab1127a06b5585f01eb17ce8d19fb.png",
     RR: "https://i.pinimg.com/originals/b2/21/ee/b221ee9ae9ecb3fa0f158161ef457e29.png",
-    RCB: "https://e1.pxfuel.com/desktop-wallpaper/436/167/desktop-wallpaper-rcb-logo-ipl-logo-thumbnail.jpg",
+    RCB: "https://i.pinimg.com/originals/0a/18/97/0a18975e807dee54026de6a46aedccf6.png",
     SRH: "https://www.pngitem.com/pimgs/m/77-776155_sunrisers-hyderabad-logo-png-image-free-download-searchpng.png",
     GT: "https://upload.wikimedia.org/wikipedia/en/thumb/0/09/Gujarat_Titans_Logo.svg/1200px-Gujarat_Titans_Logo.svg.png"
   };

@@ -54,6 +54,7 @@ const ResetPassword = () => {
       const forgotUser = await savedUserResponse.json();
       if (forgotUser) {
         toast.success("OTP Sent! Please check your mail");
+        localStorage.setItem("otpToken", forgotUser.otpToken);
         setIsOTPSent(true);
       }
     } catch (error) {
@@ -65,19 +66,23 @@ const ResetPassword = () => {
 
   const verifyOTP = async (values: z.infer<typeof updatePasswordSchema>) => {
     setLoading(true);
+    const otpToken = localStorage.getItem("otpToken");
     try {
       const savedUserResponse = await fetch(`${url}/auth/resetPassword`, {
         method: "POST",
         credentials: "include", // To send cookies
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          otpToken, 
+        }),
       });
       const forgotUser = await savedUserResponse.json();
 
       if (savedUserResponse.status === 200) {
         toast.success(
           forgotUser.message ||
-            "Password successfully changed! Login to continue"
+            "Password successfully changed! Login to continue",
         );
         updatePasswordForm.reset();
         navigate("/login");

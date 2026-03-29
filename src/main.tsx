@@ -17,9 +17,25 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
+import { createMigrate } from "redux-persist";
+
 import "./index.css";
 
-const persistConfig = { key: "root", storage, version: 1 };
+const migrations = {
+  2: (state: any) => {
+    return {
+      ...state,
+      year: "2026", // 👈 force update only this
+    };
+  },
+};
+
+const persistConfig = {
+  key: "root",
+  storage,
+  version: 2,
+  migrate: createMigrate(migrations, { debug: false }),
+};
 const persistedReducer = persistReducer(persistConfig, authReducer);
 const store = configureStore({
   reducer: persistedReducer,
@@ -39,5 +55,5 @@ createRoot(document.getElementById("root")!).render(
         <RouterProvider router={router} />
       </PersistGate>
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

@@ -33,7 +33,7 @@ function Header() {
   const isAuth = Boolean(useSelector((state: RootState) => state.token));
 
   const handleYearChange = (value: string) => {
-    dispatch(setYear({ year: 2026 }));
+    dispatch(setYear({ year: value }));
   };
 
   const handleLogout = () => {
@@ -62,12 +62,12 @@ function Header() {
               <SelectItem className="cursor-pointer" value="2026">
                 IPL 2026
               </SelectItem>
-              {/* <SelectItem className="cursor-pointer" value="2025">
+              <SelectItem className="cursor-pointer" value="2025">
                 IPL 2025
               </SelectItem>
               <SelectItem className="cursor-pointer" value="2024">
                 IPL 2024
-              </SelectItem> */}
+              </SelectItem>
             </SelectContent>
           </Select>
 

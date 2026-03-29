@@ -33,12 +33,12 @@ function Header() {
   const isAuth = Boolean(useSelector((state: RootState) => state.token));
 
   const handleYearChange = (value: string) => {
-    dispatch(setYear({ year: value }));
+    dispatch(setYear({ year: 2026 }));
   };
 
   const handleLogout = () => {
     dispatch(setLogout());
-    navigate('/')
+    navigate("/");
   };
 
   return (
@@ -49,7 +49,7 @@ function Header() {
             className="font-bold uppercase cursor-pointer text-xs md:text-xl"
             onClick={() => navigate("/")}
           >
-            IPL Predictor <span className="text-primary">2025</span>{" "}
+            IPL Predictor <span className="text-primary">2026</span>{" "}
           </p>
         </div>
 
@@ -59,12 +59,15 @@ function Header() {
               <SelectValue placeholder={currentYear} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem className="cursor-pointer" value="2025">
+              <SelectItem className="cursor-pointer" value="2026">
+                IPL 2026
+              </SelectItem>
+              {/* <SelectItem className="cursor-pointer" value="2025">
                 IPL 2025
               </SelectItem>
               <SelectItem className="cursor-pointer" value="2024">
                 IPL 2024
-              </SelectItem>
+              </SelectItem> */}
             </SelectContent>
           </Select>
 
@@ -74,7 +77,7 @@ function Header() {
                 className="cursor-pointer rounded-full min-w-24"
                 onClick={() =>
                   navigate(
-                    location.pathname === "/login" ? "/register" : "/login"
+                    location.pathname === "/login" ? "/register" : "/login",
                   )
                 }
               >
@@ -86,7 +89,9 @@ function Header() {
               <DropdownMenuTrigger className="cursor-pointer outline-none">
                 {" "}
                 <Avatar className="border-2 border-primary">
-                  <AvatarImage src={user?.picturePath?.url ?? user?.picturePath} />
+                  <AvatarImage
+                    src={user?.picturePath?.url ?? user?.picturePath}
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>

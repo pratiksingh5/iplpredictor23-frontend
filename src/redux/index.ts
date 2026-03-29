@@ -25,7 +25,7 @@ const initialState: AuthState = {
   user: null,
   token: null,
   matches: [],
-  year: "2025", 
+  year: "2026", 
 };
 
 export const authSlice = createSlice({
